@@ -54,7 +54,6 @@
                     <div >
                       
                         <a  href="#" class="like">{!! Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'You like this post' : 'Like' : 'Like'  !!}</a> 
-
                         <a style = "padding-left: 10px;" href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 0 ? 'You don\'t like this post' : 'Dislike' : 'Dislike'  }}</a>
                         <a style = "padding-left: 10px;" href="{{ url("/posts/{$post->id}") }}" class="fa fa-comments">{{ $post->comments_count }}</a>
                     </div>
