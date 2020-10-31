@@ -37,6 +37,7 @@
                                         <td>{{ $post->tags->implode('name', ', ') }}</td>
                                         <td>{{ $post->published }}</td>
                                         <td>
+
                                             @if (Auth::user()->is_admin)
                                                 @php
                                                     if($post->published == 'Yes') {
@@ -47,8 +48,16 @@
                                                 @endphp
                                                 <a href="{{ url("/admin/posts/{$post->id}/publish") }}" data-method="PUT" data-token="{{ csrf_token() }}" data-confirm="Are you sure?" class="btn btn-xs btn-warning">{{ $label }}</a>
                                                 <a href="{{ url("/admin/posts/{$post->id}") }}" class="btn btn-xs btn-success">Show</a>
-                                            <!-- <a href="{{ url("/admin/posts/{$post->id}/edit") }}" class="btn btn-xs btn-info">Edit</a> -->
+                                            <a href="{{ url("/admin/posts/{$post->id}/edit") }}" class="btn btn-xs btn-info">Edit</a>
                                             <a href="{{ url("/admin/posts/{$post->id}") }}" data-method="DELETE" data-token="{{ csrf_token() }}" data-confirm="Are you sure?" class="btn btn-xs btn-danger">Delete</a>
+                                            
+                                            @else
+                                
+                                            <a href="{{ url("/admin/posts/{$post->id}") }}" class="btn btn-xs btn-success">Show</a>
+                                            <a href="{{ url("/admin/posts/{$post->id}/edit") }}" class="btn btn-xs btn-info">Edit</a>
+                                            <a href="{{ url("/admin/posts/{$post->id}") }}" data-method="DELETE" data-token="{{ csrf_token() }}" data-confirm="Are you sure?" class="btn btn-xs btn-danger">Delete</a>
+                                            
+                                          
                                             @endif
                                             
                                         </td>

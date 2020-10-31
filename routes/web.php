@@ -25,7 +25,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth
     Route::put('/posts/{post}/publish', 'PostController@publish')->middleware('admin');
     Route::resource('/categories', 'CategoryController', ['except' => ['show']]);
     Route::resource('/tags', 'TagController', ['except' => ['show']]);
-    Route::resource('/comments', 'CommentController', ['only' => ['index', 'destroy']]);
+    // Route::resource('/comments', 'CommentController', ['only' => ['index', 'destroy']]);
+    Route::resource('/comments', 'CommentController');
     Route::resource('/users', 'UserController', ['middleware' => 'admin', 'only' => ['index', 'destroy']]);
 });
 Route::post('/like','BlogController@postLikePost')->name('like');

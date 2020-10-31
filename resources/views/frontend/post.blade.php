@@ -75,36 +75,21 @@
                 <div class="row">
                    <div class="col-md-4 panel panel-default">
                    @forelse ($results as $result)
-                       <a href="{{ url("/posts/{$result->id}") }}"> 
-                        <!-- <div class="panel-heading" >
-                           <h4> {{ $result->title }}</h4>
-                             <small  class="pull-right"> -{{ $result->user->name }}</small>
-
-                                <div class='row'>
-                                @if(isset($result->image))
-                                    <div class="col-md-5 ">
-                                     <img  class="img-responsive" src="/post_img/{{ $result->image }}" >
-                                    </div>
-                                @endisset 
-                                    <div class="col-md-7 ">
-                                    <p>{{ str_limit($result->body, 100) }}</p>
-                                    </div>
-
-                                </div>
-                         </div> -->
+                            <a href="{{ url("/posts/{$result->id}") }}"> 
+                      
                          <div class="panel-heading" >
-                           <h4> {{ $result->title }}</h4>
-                            <small class="pull-right">- {{ $result->user->name }}</small>
+                           <h4 style="color:black;font-weight: 900;"> {{ $result->title }}</h4>
+                            <small style="color:black;" class="pull-right">- {{ $result->user->name }}</small>
 
                                 <div class='row'>
                                 @if(isset($result->image))
                                     <div class="col-md-5 ">
-                                        <img   width="140" height="75" src="/post_img/{{ $result->image }}" >
+                                        <img   width="150" height="75" src="/post_img/{{ $result->image }}" >
                                     </div>
                                 @endisset  
                                 @if(isset($result->video_url))
                                     <div style="position: relative;padding-bottom: 20%;" class="col-md-5 ">
-                                    <iframe  style="position: absolute;top: 0;left:0;width: 100%;height: 100%;"  src="{{ $result->video_url }}" width="150" height="95"  scrolling="no" allow='autoplay' frameborder="0" ></iframe>
+                                    <iframe  style="position: absolute;top: 0;left:5;width: 100%;height: 100%;"  src="{{ $result->video_url }}" width="150" height="95"  scrolling="no" allow='autoplay' frameborder="0" ></iframe>
                                     </div>
                                 @endisset
                                     <div class="col-md-7 ">
@@ -112,7 +97,7 @@
                                      </div>
 
                                 </div>
-                                <p class="pull-right">{{ str_limit($result->body, 100) }}</p>
+                                <p style="color:black;" class="pull-right">{{ str_limit($result->body, 100) }}</p>
                          </div>
                         </a>
                          

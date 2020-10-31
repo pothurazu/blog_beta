@@ -22,6 +22,11 @@ class CommentController extends Controller
         return view('admin.comments.index', compact('comments'));
     }
 
+    public function edit(Comment $comment)
+    {
+        return view('frontend._form', compact('comment'));
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -16,6 +16,9 @@ use Intervention\Image\ImageManagerStatic ;
 use Illuminate\Support\Facades\File;
 use LaravelVideoEmbed;
 use Cohensive\Embed\Facades\Embed;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 
 
 
@@ -28,9 +31,25 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['user', 'category', 'tags', 'comments'])->paginate(10);
+   
+
         
-        return view('admin.posts.index', compact('posts'));
+        if(auth()->user()->is_admin){
+            $posts = Post::with(['user', 'category', 'tags', 'comments'])->paginate(10);
+        
+            return view('admin.posts.index', compact('posts'));
+        }
+        else
+        {  
+            
+            $posts = Post::with(['user', 'category', 'tags', 'comments'])->where('user_id', '=', '2' )->paginate(10);
+        
+            return view('admin.posts.index', compact('posts'));
+        }
+
+      
+        // $posts = Post::with(['user', 'category', 'tags', 'comments'])->where('id', '=',Auth::user()->id )->paginate(10);
+        
     }
 
     /**
@@ -60,7 +79,7 @@ class PostController extends Controller
         // if($request->hasFile('image')){
         if($typ == 'image'){
 
-             $fileName =  "image_".rand(0, 999999).time().'.'.$request->image->getClientOriginalExtension();
+             $fileName =  "image_".rand(0, 999999).time().$request->image->getClientOriginalExtension();
             // // $request->image->storeAs('Posts_Images', $fileName);
             // // $request->image->storeAs('images', $imageName, 's3')
             //  $request->image->move(public_path('post_img'), $fileName);
@@ -224,10 +243,13 @@ class PostController extends Controller
 
             return redirect('/admin/posts');
         }
-
+       
+        
         $post->delete();
+        File::delete(public_path().'/post_img/'.$post->image);
+        // Storage::delete(public_path().'/post_img/'.$post->image);
+        // Storage::disk('post_img')->delete(public_path().'/post_img/'.$post->image);
         flash()->overlay('Post deleted successfully.');
-
         return redirect('/admin/posts');
     }
 
