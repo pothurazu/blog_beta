@@ -41,8 +41,8 @@ class PostController extends Controller
         }
         else
         {  
-            
-            $posts = Post::with(['user', 'category', 'tags', 'comments'])->where('user_id', '=', '2' )->paginate(10);
+            $var = auth()->user()->id;
+            $posts = Post::with(['user', 'category', 'tags', 'comments'])->where('user_id', '=', $var )->paginate(10);
         
             return view('admin.posts.index', compact('posts'));
         }
