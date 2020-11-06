@@ -10,6 +10,24 @@
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
 
+
+
+
+
+
+                        <!-- <label for="name" class="col-md-4 control-label">Login With</label> -->
+                        <!-- <div class="col-md-6"> -->
+                            <!-- <a href="{{ url('login/facebook') }}"><i class="fa fa-facebook"></i></a>
+                            <a href="{{ url('login/google') }}" class="btn btn-social-icon btn-google-plus"><i class="fa fa-google-plus"></i></a> -->
+                            <a href="{{ url('login/facebook') }}" class="loginBtn loginBtn--facebook" style="left:134px">
+                                Login with Facebook
+                            </a>
+
+                            <a href="{{ url('login/google') }}" class="loginBtn loginBtn--google" style="left:139px">
+                                Login with Google
+                            </a>
+
+                        <!-- </div> -->
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
@@ -17,9 +35,9 @@
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
 
                                 @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
                                 @endif
                             </div>
                         </div>
@@ -31,9 +49,9 @@
                                 <input id="password" type="password" class="form-control" name="password" required>
 
                                 @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
                                 @endif
                             </div>
                         </div>
@@ -58,7 +76,11 @@
                                     Forgot Your Password?
                                 </a>
                             </div>
+
+
                         </div>
+
+
                     </form>
                 </div>
             </div>

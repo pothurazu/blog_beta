@@ -79,12 +79,12 @@ class PostController extends Controller
         // if($request->hasFile('image')){
         if($typ == 'image'){
 
-             $fileName =  "image_".rand(0, 999999).time().$request->image->getClientOriginalExtension();
+            $fileName =  "image_".rand(0, 999999).time().'.'.$request->image->getClientOriginalExtension();
             // // $request->image->storeAs('Posts_Images', $fileName);
             // // $request->image->storeAs('images', $imageName, 's3')
             //  $request->image->move(public_path('post_img'), $fileName);
             $image_resize = Image::make($request->file('image')->getRealPath())->resize(960, 640);              
-            $image_resize->save(public_path('\post_img') ."\\".$fileName);
+            $image_resize->save(public_path('/post_img') ."/".$fileName);
              $post = Post::create([
                 'title'       => $request->title,
                 'body'        => $request->body,

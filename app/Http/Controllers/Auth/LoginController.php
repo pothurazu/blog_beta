@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use App\User;
 class LoginController extends Controller
 {
     /*
@@ -36,4 +38,30 @@ class LoginController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
     }
+
+    public function socialLogin($social)
+    {
+        return Socialite::driver($social)->redirect();
+    }
+    /**
+     * Obtain the user information from Social Logged in.
+     * @param $social
+     * @return Response
+     */
+    public function handleProviderCallback($social)
+    {
+      
+        $userSocial = Socialite::driver($social)->stateless()->user();
+        // $user = Socialite::driver('facebook')->stateless()->user();
+        $user = User::where(['email' => $userSocial->getEmail()])->first();
+        if($user){
+            Auth::login($user);
+            return redirect()->action('BlogController@index');
+        }else{
+            return view('auth.register',['name' => $userSocial->getName(),'provider'=>$social, 'email' => $userSocial->getEmail()]);
+        }
+    }
+
+
+
 }

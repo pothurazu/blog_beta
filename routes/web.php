@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Http\Controllers\Auth\LoginController;
 
 Route::get('/', 'BlogController@index');
 Route::get('/posts/{post}', 'BlogController@post');
@@ -31,3 +32,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth
 });
 Route::post('/like','BlogController@postLikePost')->name('like');
 // Route::post('/del_user_cmnt/{$id}', 'BlogController@deleteComment')->middleware('auth');
+
+// Route::get('login/facebook', [LoginController::class, 'redirectToProvider']);
+// Route::get('login/facebook/callback', [LoginController::class, 'handleProviderCallback']);
+
+// Route::get('login/{provider}', 'SocialController@redirect');
+// Route::get('login/{provider}/callback','SocialController@Callback');
+
+Route::get('/login/{social}','Auth\LoginController@socialLogin')->where('social','twitter|facebook|linkedin|google|github|bitbucket');
+Route::get('/login/{social}/callback','Auth\LoginController@handleProviderCallback')->where('social','twitter|facebook|linkedin|google|github|bitbucket');
