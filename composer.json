@@ -6,11 +6,10 @@
     "type": "project",
     "require": {
         "php": ">=7.2.5",
-        "cohensive/embed": "5.5.*",
+        "cybercog/laravel-love": "^8.6",
         "facade/ignition": "^2.0",
         "fruitcake/laravel-cors": "^1.0",
         "intervention/image": "^2.5",
-        "jorenvanhocht/laravel-share": "^3.3",
         "laracasts/flash": "^3.1",
         "laravel/framework": "^7.0",
         "laravel/helpers": "^1.2",
@@ -18,7 +17,6 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.0",
-        "merujan99/laravel-video-embed": "dev-master",
         "nunomaduro/collision": "^4.1"
     },
     "require-dev": {

@@ -3,8 +3,7 @@
 @section('content')
 <div class="row">
 @foreach ($posts as $post)
-<a href="{{ url("/posts/{$post->id}") }}">
-   <div class="col-md-3"  >
+   <div class="col-md-3" >
     
         @if(isset($post->image))
                 <!-- <div class="col-md-12 " > -->
@@ -41,7 +40,7 @@
    </div>
   
    @endforeach
-</a>
+
 
 </div>
 

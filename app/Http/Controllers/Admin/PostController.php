@@ -7,12 +7,13 @@ use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use DB;
-use Intervention\Image\ImageManagerStatic ;
+use Intervention\Image\ImageManagerStatic;
 use Illuminate\Support\Facades\File;
 use LaravelVideoEmbed;
 use Cohensive\Embed\Facades\Embed;
@@ -22,8 +23,15 @@ use Illuminate\Support\Facades\Session;
 
 
 
+
 class PostController extends Controller
 {
+
+
+
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -31,25 +39,23 @@ class PostController extends Controller
      */
     public function index()
     {
-   
 
-        
-        if(auth()->user()->is_admin){
+
+
+        if (auth()->user()->is_admin) {
             $posts = Post::with(['user', 'category', 'tags', 'comments'])->paginate(10);
-        
+
             return view('admin.posts.index', compact('posts'));
-        }
-        else
-        {  
+        } else {
             $var = auth()->user()->id;
-            $posts = Post::with(['user', 'category', 'tags', 'comments'])->where('user_id', '=', $var )->paginate(10);
-        
+            $posts = Post::with(['user', 'category', 'tags', 'comments'])->where('user_id', '=', $var)->paginate(10);
+
             return view('admin.posts.index', compact('posts'));
         }
 
-      
+
         // $posts = Post::with(['user', 'category', 'tags', 'comments'])->where('id', '=',Auth::user()->id )->paginate(10);
-        
+
     }
 
     /**
@@ -72,91 +78,77 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(PostRequest $request)
-    {   
-            
-        
+    {
+
+
         $typ = $request->post_type;
         // if($request->hasFile('image')){
-        if($typ == 'image'){
+        if ($typ == 'image') {
 
-            $fileName =  "image_".rand(0, 999999).time().'.'.$request->image->getClientOriginalExtension();
+            $fileName =  "image_" . rand(0, 999999) . time() . '.' . $request->image->getClientOriginalExtension();
             // // $request->image->storeAs('Posts_Images', $fileName);
             // // $request->image->storeAs('images', $imageName, 's3')
             //  $request->image->move(public_path('post_img'), $fileName);
-            $image_resize = Image::make($request->file('image')->getRealPath())->resize(960, 640);              
-            $image_resize->save(public_path('/post_img') ."/".$fileName);
-             $post = Post::create([
+            $image_resize = Image::make($request->file('image')->getRealPath())->resize(960, 640);
+            $image_resize->save(public_path('/post_img') . "/" . $fileName);
+            $post = Post::create([
                 'title'       => $request->title,
                 'body'        => $request->body,
                 'category_id' => $request->category_id,
-                 'image'        =>$fileName,
+                'image'        => $fileName,
                 'post_type'     => 'image'
-                
-                
+
+
             ]);
-  
-        }
-        elseif($typ == 'video')
-        {
-                $url =$request->video_url;
+        } elseif ($typ == 'video') {
+            $url = $request->video_url;
 
-                 if(isset($url))   {
-                            
-                            
-                            if ( strstr( $url, 'dailymotion' ) ) {
-                                $embed = $url;
-                            } 
-                            elseif( strstr( $url, 'vimeo' ) ) {
-                        
-                                $url =$request->video_url;
-                                $id = preg_replace("/[^0-9]/", '', $url);
-                                $embed = "https://player.vimeo.com/video/$id";
-                                //  $whitelist = ['YouTube', 'Vimeo','dailymotion',];
-                                // $embed = LaravelVideoEmbed::parse($url, $whitelist);  
-                            }
-                            elseif( strstr( $url, 'youtu' ) ){
-
-                                if(strstr( $url, 'youtube' ) ){
-
-                                    $id = substr($url, strpos($url, "=") + 1 );
-                                    $embed = "https://www.youtube.com/embed/$id";
-                                    // echo $embed;
-                                 }
-                                 else{
-                                
-                                  $id = substr($url, strpos($url, "youtu.be") + 8 );
-                                    $embed = "https://www.youtube.com/embed$id";
-                                    // echo $embed;
-                                 }
-                                
+            if (isset($url)) {
 
 
-                            }
-                            else{
+                if (strstr($url, 'dailymotion')) {
+                    $embed = $url;
+                } elseif (strstr($url, 'vimeo')) {
 
-                                $embed = $request->video_url;
-                            }
-                            $post = Post::create([
-                                'title'       => $request->title,
-                                'body'        => $request->body,
-                                'category_id' => $request->category_id,
-                                'video_url'    =>$embed,
-                                'post_type'    =>'video'
-                                
-                            ]);
-                      }
-           
-            
-           
-        }
-        else{
-        $post = Post::create([
-            'title'       => $request->title,
-            'body'        => $request->body,
-            'category_id' => $request->category_id,
-             'post_type'    => 'content'
-            
-        ]);
+                    $url = $request->video_url;
+                    $id = preg_replace("/[^0-9]/", '', $url);
+                    $embed = "https://player.vimeo.com/video/$id";
+                    //  $whitelist = ['YouTube', 'Vimeo','dailymotion',];
+                    // $embed = LaravelVideoEmbed::parse($url, $whitelist);  
+                } elseif (strstr($url, 'youtu')) {
+
+                    if (strstr($url, 'youtube')) {
+
+                        $id = substr($url, strpos($url, "=") + 1);
+                        $embed = "https://www.youtube.com/embed/$id";
+                        // echo $embed;
+                    } else {
+
+                        $id = substr($url, strpos($url, "youtu.be") + 8);
+                        $embed = "https://www.youtube.com/embed$id";
+                        // echo $embed;
+                    }
+                } else {
+
+                    $embed = $request->video_url;
+                }
+                $post = Post::create([
+                    'title'       => $request->title,
+                    'body'        => $request->body,
+                    'category_id' => $request->category_id,
+                    'video_url'    => $embed,
+                    'post_type'    => 'video'
+
+                ]);
+            }
+        } else {
+            $post = Post::create([
+                'title'       => $request->title,
+                'body'        => $request->body,
+                'category_id' => $request->category_id,
+                'post_type'    => 'content'
+
+            ]);
         }
         $tagsId = collect($request->tags)->map(function ($tag) {
             return Tag::firstOrCreate(['name' => $tag])->id;
@@ -164,7 +156,7 @@ class PostController extends Controller
 
         $post->tags()->attach($tagsId);
         flash()->overlay('Post created successfully and as soon as it will be publish');
-       
+
         // return redirect('/admin/posts');
         return redirect('home');
     }
@@ -178,7 +170,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $post = $post->load(['user', 'category', 'tags', 'comments']);
-            
+
         return view('admin.posts.show', compact('post'));
     }
 
@@ -243,10 +235,10 @@ class PostController extends Controller
 
             return redirect('/admin/posts');
         }
-       
-        
+
+
         $post->delete();
-        File::delete(public_path().'/post_img/'.$post->image);
+        File::delete(public_path() . '/post_img/' . $post->image);
         // Storage::delete(public_path().'/post_img/'.$post->image);
         // Storage::disk('post_img')->delete(public_path().'/post_img/'.$post->image);
         flash()->overlay('Post deleted successfully.');
@@ -255,10 +247,107 @@ class PostController extends Controller
 
     public function publish(Post $post)
     {
-        $post->is_published = ! $post->is_published;
+        $post->is_published = !$post->is_published;
         $post->save();
         flash()->overlay('Post changed successfully.');
 
         return redirect('/admin/posts');
+    }
+
+
+    public function post(Post $post)
+    {
+
+
+        $post = $post->load(['comments.user', 'tags', 'user', 'category']);
+        
+        $results = Post::inRandomOrder()->get();
+
+
+        $lyk_coun = DB::select(DB::raw("SELECT count FROM love_reactant_reaction_counters where reactant_id = $post->love_reactant_id && reaction_type_id = 1"));
+        $dislyk_coun = DB::select(DB::raw("SELECT count FROM love_reactant_reaction_counters where reactant_id = $post->love_reactant_id && reaction_type_id = 2"));
+        $json = json_encode($post);
+         
+        
+        
+        $user = Auth::user();
+        if (Auth::user()) {
+           
+            $reacterFacade = $user->viaLoveReacter();
+            $isReacted = $reacterFacade->hasReactedTo($post, 'Like');
+            $isNotReacted = $reacterFacade->hasReactedTo($post, 'Dislike');
+           
+           if (is_array($lyk_coun) && count($lyk_coun) > 0){
+                
+                    
+                     $lyk_count = $lyk_coun[0]->count;
+                     if (is_array($dislyk_coun) && count($dislyk_coun) > 0){
+                     $dislyk_count = $dislyk_coun[0]->count;
+                     return view('frontend.post', compact('post', 'results', 'isReacted', 'isNotReacted', 'lyk_count', 'dislyk_count', 'json'));
+
+                     }
+                     return view('frontend.post', compact('post', 'results', 'isReacted', 'isNotReacted', 'lyk_count', 'json'));
+               }
+           
+          
+       
+            return view('frontend.post', compact('post', 'results', 'isReacted', 'isNotReacted',  'json'));
+       
+        }
+        
+        
+        
+        else {
+            return view('frontend.post', compact('post', 'results'));
+        }
+    }
+
+
+
+    public function like(Post $post)
+    {
+
+
+        $user = Auth::user();
+        $reacterFacade = $user->viaLoveReacter();
+        $isReacted = $reacterFacade->hasReactedTo($post, 'Like');
+        $isNotReacted = $reacterFacade->hasReactedTo($post, 'Dislike');
+        if ($isNotReacted) {
+            $reacterFacade->unreactTo($post, 'Dislike');
+        }
+        $reacterFacade->reactTo($post, 'Like');
+        return back();
+    }
+
+    public function unlike(Post $post)
+    {
+        $user = Auth::user();
+        $reacterFacade = $user->viaLoveReacter();
+        $reacterFacade->UnreactTo($post, 'Like');
+
+        return back();
+    }
+
+    public function dislike(Post $post)
+    {
+        // var_dump($post);die;
+        $user = Auth::user();
+        $reacterFacade = $user->viaLoveReacter();
+        $isReacted = $reacterFacade->hasReactedTo($post, 'Like');
+        $isNotReacted = $reacterFacade->hasReactedTo($post, 'Dislike');
+        if ($isReacted) {
+            $reacterFacade->unreactTo($post, 'Like');
+        }
+
+        $reacterFacade->reactTo($post, 'Dislike');
+        return back();
+    }
+
+    public function undislike(Post $post)
+    {
+        $user = Auth::user();
+        $reacterFacade = $user->viaLoveReacter();
+        $reacterFacade->UnreactTo($post, 'Dislike');
+        return back();
     }
 }

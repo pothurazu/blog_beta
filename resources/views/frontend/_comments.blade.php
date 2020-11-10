@@ -9,12 +9,14 @@
             {{ $comment->user->name }} says...
            
             <span class="pull-right">{{ $comment->created_at->diffForHumans() }}
-                
+               
+            @if(isset($$comment->user_id))
                 @if($comment->user_id == Auth::user()->id)
-                <!-- <a class="fa fa-pencil"  href="{{ url("/admin/comments/{$comment->id}/edit") }}"></a> -->
+                
                 
                 <a class="fa fa-trash"  href="{{ url("/admin/comments/{$comment->id}") }}" data-method="DELETE" data-token="{{ csrf_token() }}" data-confirm="Are you sure to delete ur comment?" ></a>                    
                 @endif
+              @endif
                 
             </span>
            

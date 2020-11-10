@@ -109,32 +109,46 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ url('/') }}">
                         <i class="fa fa-history" aria-hidden="true"></i>
 
                         Recent
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="#">
                         <i class="fa fa-thumbs-up"></i>
 
                         Most Liked
                     </a>
-                </li>
+                </li> -->
 
                 <li>
-
+                  
+                   
+                 
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
 
                         <i class="fa fa-list-alt" aria-hidden="true"></i>
                         Categories
                     </a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
-                        <li><a href="#">Health</a></li>
+                        <!-- <li><a href="#">Health</a></li>
                         <li><a href="#">Science</a></li>
-                        <li><a href="#">Sci-Fi</a></li>
+                        <li><a href="#">Sci-Fi</a></li> -->
+                       @isset($cat)
+                        @foreach ($cat as $category)
+                        
+                    <li> 
+                     
+                        <a href="{{ url('cat_id/   '.$category->id.'  ')}}">{{$category->name}}</a></li>
+                        
+                        
+                        @endforeach
+                        @endisset
                     </ul>
+                   
+                    
                 </li>
 
                 <!-- <li>
@@ -219,7 +233,7 @@
 
         });
     </script>
-    <script src="{{ asset('/js/like.js') }}"></script>
+    <script src="{{ asset('/js/like.js') }}" type="text/javascript"></script>
 
     <script>
         var token = '{{ Session::token() }}';

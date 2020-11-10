@@ -8,9 +8,13 @@ use App\Models\Tag;
 use App\Like;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
+use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
 
-class Post extends Model
+class Post extends Model  implements ReactableInterface
 {
+    use Reactable;
+    
     protected $fillable = [
         'title',
         'body',

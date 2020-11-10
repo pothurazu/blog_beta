@@ -53,26 +53,68 @@
                         @endforelse
                     </p>
                     @if(Auth::user())
+
                     <div class="row">
                         <div class="col-md-6" style="padding-top:30px">
-                            <a href="#" class="like">{!! Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'You like this post' : 'Like' : 'Like' !!}</a>
+                         
+                        @if ($isReacted == 0)
+                            <a class="like pull-left" href="{{ route('posts.like', $post) }}">
 
-                            <a style="padding-left: 10px;" href="#" class="like">{{ Auth::user()->likes()->where('post_id', $post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 0 ? 'You don\'t like this post' : 'Dislike' : 'Dislike'  }}</a>
+                                <i class="fa fa-thumbs-o-up" style="font-size:24px;"> </i>
+                                @if(isset($lyk_count))
+                                {{$lyk_count}}
+                                @endisset
 
+
+                               
+
+                            </a>
+                            @else
+                            <a href="{{ route('posts.unlike', $post) }}">
+                                
+                                <i class="fa fa-thumbs-up" style="font-size:24px;color:red"> </i> 
+                                @if(isset($lyk_count))
+                                  {{$lyk_count}}
+                                @endisset
+                               
+
+                            </a>
+                            @endif
+
+
+                            @if ($isNotReacted == 0)
+
+                            <a href="{{ route('posts.dislike', $post) }}">
+                                <i style="font-size:24px" class="fa fa-thumbs-o-down">
+                                
+                                
+                               
+                                </i>@if(isset($dislyk_count))
+                                {{$dislyk_count}}
+                                @endisset
+
+                            </a>
+                            @else
+
+                            <a href="{{ route('posts.undislike', $post) }}">
+                                <i class="fa fa-thumbs-down" style="font-size:24px;color:red"> </i>
+                              
+                                @if(isset($dislyk_count))
+                                {{$dislyk_count}}
+                                @endisset
+                                
+
+                            </a>
+                            @endif
                         </div>
                         <div class="col-md-6">
 
-                        
-                        <div class="shareaholic-canvas" data-app="share_buttons" data-app-id="28992343"></div>
+
+                            <div class="shareaholic-canvas" data-app="share_buttons" data-app-id="28992343"></div>
+
                         </div>
+
                     </div>
-
-
-
-
-
-
-
                     @endif
                 </div>
             </div>

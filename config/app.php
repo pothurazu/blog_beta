@@ -163,10 +163,9 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        // Merujan99\LaravelVideoEmbed\Providers\LaravelVideoEmbedServiceProvider::class,
-        Cohensive\Embed\EmbedServiceProvider::class,
+       
         Laravel\Socialite\SocialiteServiceProvider::class,
-        Jorenvh\Share\Providers\ShareServiceProvider::class,
+        
         
     
 
@@ -238,10 +237,10 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'LaravelVideoEmbed' => Merujan99\LaravelVideoEmbed\Facades\LaravelVideoEmbed::class,
+        
         'Embed' => Cohensive\Embed\Facades\Embed::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        'Share' => Jorenvh\Share\ShareFacade::class,
+        
 
         
 
