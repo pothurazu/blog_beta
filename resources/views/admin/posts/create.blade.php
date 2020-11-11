@@ -15,7 +15,7 @@
                     </div>
 
                     <div class="panel-body">
-                        {!! Form::open(['url' => '/admin/posts', 'class' => 'form-horizontal', 'role' => 'form','files'=>'true']) !!}
+                        {!! Form::open(['url' => '/admin/posts', 'class' => 'form-horizontal', 'role' => 'form','files'=>'true','enctype'=>'multipart/form-data']) !!}
 
                             @include('admin.posts._form')
 
