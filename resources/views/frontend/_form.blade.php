@@ -2,7 +2,7 @@
     <div class="panel-heading">Write your comment</div>
 
     <div class="panel-body">
-        {!! Form::open(['url' => "posts/{$post->id}/comment"]) !!}
+        {!! Form::open(['url' => "posts/{$post->id}/comment" , 'files' =>true,'enctype'=>'multipart/form-data'])]) !!}
             <div class="form-group">
                 {!! Form::textarea('body', null, ['class' => 'form-control', 'rows' => 3, 'required']) !!}
             </div>
